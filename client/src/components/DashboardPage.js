@@ -11,21 +11,19 @@ import {
   CNavbarBrand,
   CNavItem,
   CNavLink,
+  CAvatar,
   CSidebar,
   CSidebarBrand,
   CSidebarNav,
-  CNavbarToggler,
   CSidebarToggler,
 } from "@coreui/react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import CIcon from "@coreui/icons-react";
-import { cilSpeedometer, cilUser } from "@coreui/icons";
+
 
 const DashboardPage = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [sidebarVisible, setSidebarVisible] = useState(true);
   // Fetch user profile
   const fetchUserProfile = async () => {
     try {
@@ -46,39 +44,56 @@ const DashboardPage = () => {
     fetchUserProfile();
   }, []);
 
+  // Toggle Sidebar Visibility
+  const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
+
   return (
     <div className="d-flex">
       {/* Sidebar */}
-      <CSidebar>
+      <CSidebar visible={sidebarVisible}>
         <CSidebarBrand className="text-center py-4">
           <h4>My Dashboard</h4>
         </CSidebarBrand>
         <CSidebarNav>
           <CNavItem>
             <CNavLink href="/dashboard" className="d-flex align-items-center">
-              <CIcon icon={cilSpeedometer} size="lg" className="me-2" />{" "}
+              {/* <CIcon icon={cilSpeedometer} size="lg" className="me-2" />{" "} */}
               Dashboard
             </CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink href="/profile" className="d-flex align-items-center">
-              <CIcon icon={cilUser} size="lg" className="me-2" /> Profile
+              {/* <CIcon icon={cilUser} size="lg" className="me-2" /> Profile */}
             </CNavLink>
           </CNavItem>
         </CSidebarNav>
-        <CSidebarToggler />
+        <CSidebarToggler onClick={toggleSidebar} className="mt-auto" />
       </CSidebar>
 
       {/* Main Content */}
       <CContainer fluid className="p-4">
         {/* Header */}
-        <CNavbar color="light" light expand="md" className="mb-4">
-          <CNavbarBrand>Welcome, {userProfile?.username}</CNavbarBrand>
-          <CNavbarToggler />
+        <CNavbar
+          color="light"
+          light
+          expand="md"
+          className="mb-4 d-flex justify-content-between"
+        >
+          <CNavbarBrand>My App Name</CNavbarBrand>
+          <div className="d-flex align-items-center">
+            {userProfile?.avatar && (
+              <CAvatar src={userProfile.avatar} size="md" className="me-2" />
+            )}
+            <div>
+              <strong>{userProfile?.username}</strong>
+              <br />
+              <small>{userProfile?.email}</small>
+            </div>
+          </div>
         </CNavbar>
 
-        <CRow>
-          <CCol>
+        <CRow className="justify-content-center">
+          <CCol md={8} lg={6}>
             {/* Display loading spinner or profile content */}
             {loading ? (
               <div className="d-flex justify-content-center">
@@ -104,3 +119,4 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+// No additional code needed at the placeholder as the requested features are already implemented in the provided code.
